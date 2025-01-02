@@ -2,8 +2,8 @@
 
 #Scrip to clone, build and run NorESM on Betzy
 
-dosetup1=0 #do first part of setup
-dosetup2=0 #do second part of setup (after first manual modifications)
+dosetup1=1 #do first part of setup
+dosetup2=1 #do second part of setup (after first manual modifications)
 dosetup3=1 #do second part of setup (after namelist manual modifications)
 dosubmit=1 #do the submission stage
 forcenewcase=1 #scurb all the old cases and start again
@@ -16,7 +16,7 @@ project='nn9039k' #nn8057k: EMERALD, nn2806k: METOS, nn9188k: CICERO, nn9039k: N
 machine='betzy'
 
 casename="n1850.FATES-NOCOMP.ne30_tn14.alpha08d.20250102"
-compset="1850_DATM%QIA_CLM60%FATES_SICE_SOCN_MOSART_SGLC_SWAV"
+compset="1850_DATM%QIA_CLM60%FATES_SICE_SOCN_SROF_SGLC_SWAV"
 resolution="ne30pg3_tn14"
 project="nn9039k"
 
@@ -93,6 +93,9 @@ then
         ./xmlchange RESUBMIT=1
         ./xmlchange --subgroup case.run JOB_WALLCLOCK_TIME=48:00:00
         ./xmlchange --subgroup case.st_archive JOB_WALLCLOCK_TIME=03:00:00        
+        
+        #./xmlchange CLM_ACCELERATED_SPINUP="on"
+
 
         echo 'done with xmlchanges'        
         
@@ -101,9 +104,9 @@ then
         echo "Done with Setup. Update namelists in $workpath$casename/user_nl_*"
 
         #Add following lines to user_nl_clm    
-        #fates_paramfile = '/cluster/work/users/rosief/git/calibration_parameter_files/SP_calib/fates_params_det_alpha09.nc'
-        #use_fates_nocomp=TRUE
-        #use_fates_fixed_biogeog=TRUE 
+        echo "fates_paramfile = '/cluster/work/users/rosief/git/calibration_parameter_files/SP_calib/fates_params_det_alpha09.nc'" >> $workpath$casename/user_nl_clm
+        echo "use_fates_nocomp=.true." >> $workpath$casename/user_nl_clm
+        echo "use_fates_fixed_biogeog=.true." >> $workpath$casename/user_nl_clm
     fi
 fi
 
