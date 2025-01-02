@@ -3,32 +3,40 @@
 #Scrip to clone, build and run NorESM on Betzy
 
 dosetup1=0 #do first part of setup
-dosetup2=0 #do second part of setup (after manual modifications)
-dosubmit=0 #do the submission stage
-forcenewcase=0 #scurb all the old cases and start again
+dosetup2=0 #do second part of setup (after first manual modifications)
+dosetup3=0 #do second part of setup (after namelist manual modifications)
+dosubmit=1 #do the submission stage
+forcenewcase=1 #scurb all the old cases and start again
 doanalysis=0 #analyze output (not yet coded up)
 
-echo "setup1, setup2, submit, analysis:", $dosetup1, $dosetup2, $dosubmit, $doanalysis 
+echo "setup1, setup2, setup3, submit, forcenewcase, analysis:", $dosetup1, $dosetup2, $dosetup3, $dosubmit, $forcenewcase, $doanalysis 
 
 USER="kjetisaa"
 project='nn9039k' #nn8057k: EMERALD, nn2806k: METOS, nn9188k: CICERO, nn9039k: NorESM (INES2)
 machine='betzy'
-setCPUs=0 #For setting number of CPUs. 1: 1024
 
-# what is your clone of the ctsm repo called? (or you want it to be called?) 
-noresmrepo="NorESM_alpha07_fatessp_newradiation" 
+casename="n1850.FATES-SP.ne30_tn14.alpha08d.20250102"
+compset="1850_DATM%QIA_CLM60%FATES-SP_SICE_SOCN_MOSART_SGLC_SWAV"
+resolution="ne30pg3_tn14"
+project="nn9039k"
 
-#path to scratch (or where the model is built.)
-scratch="/cluster/work/users/$USER/"
-#where are we now?
-startdr=$(pwd)
+#NorESM dir
+noresmrepo="NorESM_alpha08d" 
+
 # aka where do you want the code and scripts to live?
-workpath="/cluster/work/users/$USER/" #previously: 'gitpath'
-# some more derived path names to simplify latter scripts
+workpath="/cluster/work/users/$USER/" 
+
+# some more derived path names to simplify scripts
 scriptsdir=$workpath$noresmrepo/cime/scripts/
 
-#path to results (history) 
-results_dir="/cluster/work/users/$USER/"
+#case dir
+casedir=$workpath$casename
+
+#path to results (history, check this!!) 
+results_dir="$workpath/noresm/$casename"
+
+#where are we now?
+startdr=$(pwd)
 
 #Download code and checkout externals
 if [ $dosetup1 -eq 1 ] 
@@ -44,11 +52,11 @@ then
     else
         echo "Cloning NorESM"
         
-        #From Mariana
         git clone https://github.com/NorESMhub/NorESM/ $noresmrepo
         cd $noresmrepo
-        git checkout noresm2_5_alpha07
-        echo "Modify Externals.cfg, then continue"
+        git checkout noresm2_5_alpha08d
+        ./bin/git-fleximod update
+        echo "Built model here: $workpath$noresmrepo"        
 
         #[cam]
         #protocol = git
@@ -58,7 +66,7 @@ then
         #externals = Externals_CAM.cfg
         #required = True
 
-        #Run this manually
+        #Run this manually (old setup)
         #./manage_externals/checkout_externals -v
     fi
 fi
@@ -70,68 +78,56 @@ then
 
     if [[ $forcenewcase -eq 1 ]]
     then 
-        if [[ -d "$casename" ]] 
+        if [[ -d "$workpath$casename" ]] 
         then    
-        echo "$casename exists on your filesystem. Removing it!"
+        echo "$workpath$casename exists on your filesystem. Removing it!"
+        rm -rf $workpath$casename
         rm -r $workpath/noresm/$casename
         rm -r $workpath/archive/$casename
         rm -r $casename
         fi
     fi
-    if [[ -d "$casename" ]] 
+    if [[ -d "$workpath$casename" ]] 
     then    
-        echo "$casename exists on your filesystem."
+        echo "$workpath$casename exists on your filesystem."
     else
         
-        echo "making case:" $casename        
-        ./create_newcase --case $results_dir/n1850.ne30_tn14.hybrid_fatessp.20241111 --compset 1850_CAM%DEV%LT%NORESM%CAMoslo_CLM60%FATES-SP_CICE_BLOM%ECO_MOSART_DGLC%NOEVOLVE_SWAV_SESP --res ne30pg3_tn14 --project nn9039k --run-unsupported --mach betzy 
-        cd $casename #TODO: fix path here
+        echo "making case:" $workpath$casename        
+        ./create_newcase --case $workpath$casename --compset $compset --res $resolution --project $project --run-unsupported --mach betzy -pecount L
+        cd $workpath$casename
 
         #XML changes
         echo 'updating settings'
-        ./xmlchange NTASKS=1920
-        ./xmlchange NTASKS_OCN=256
-        ./xmlchange ROOTPE=0
-        ./xmlchange ROOTPE_OCN=1920
-        ./xmlchange BLOM_VCOORD=cntiso_hybrid,BLOM_TURBULENT_CLOSURE=
         ./xmlchange STOP_OPTION=nyears
-        ./xmlchange STOP_N=7
-        ./xmlchange REST_N=1
-        ./xmlchange REST_OPTION=nyears
-        ./xmlchange RESUBMIT=3
+        ./xmlchange STOP_N=2
+        ./xmlchange RESUBMIT=1
         ./xmlchange --subgroup case.run JOB_WALLCLOCK_TIME=48:00:00
         ./xmlchange --subgroup case.st_archive JOB_WALLCLOCK_TIME=03:00:00        
 
         echo 'done with xmlchanges'        
         
         ./case.setup
-        echo "Update namelists"
+        echo ' '
+        echo "Done with Setup. Update namelists in $workpath$casename/user_nl_*"
         #./case.build
     fi
 fi
-#echo "Currently in" $(pwd)
+
+#Build case case
+if [[ $dosetup3 -eq 1 ]] 
+then
+    cd $workpath$casename
+    echo "Currently in" $(pwd)
+    ./case.build
+    echo ' '    
+    echo "Done with Build"
+fi
 
 #Submit job
 if [[ $dosubmit -eq 1 ]] 
 then
-    cd $scriptsdir/$casename
+    cd $workpath$casename
     ./case.submit
-    echo 'done submitting'  
-    cd $startdr  
-
-    #Check job (TODO)
-    rund="$scratch/ctsm/$casename/run/"
-    echo $rund
-    #ls -lrt $rund   
-    
-    #Store key simulation information and paths
-    echo "----$casename----" >> List_of_simulations.txt
-    date >> List_of_simulations.txt
-    echo /cluster/work/users/kjetisaa/ctsm/$casename/run >> List_of_simulations.txt
-    echo /cluster/work/users/kjetisaa/archive/$casename/lnd/hist/ >> List_of_simulations.txt
-    echo $scriptsdir/$casename >> List_of_simulations.txt
-    echo $compset >> List_of_simulations.txt        
-    echo $resolution >> List_of_simulations.txt
-    echo $nl_casesetup_string >> List_of_simulations.txt 
-    echo '' >> List_of_simulations.txt
+    echo " "
+    echo 'done submitting'       
 fi
