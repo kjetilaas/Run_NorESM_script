@@ -4,7 +4,7 @@
 
 dosetup1=0 #do first part of setup
 dosetup2=0 #do second part of setup (after first manual modifications)
-dosetup3=0 #do second part of setup (after namelist manual modifications)
+dosetup3=1 #do second part of setup (after namelist manual modifications)
 dosubmit=1 #do the submission stage
 forcenewcase=1 #scurb all the old cases and start again
 doanalysis=0 #analyze output (not yet coded up)
@@ -15,8 +15,8 @@ USER="kjetisaa"
 project='nn9039k' #nn8057k: EMERALD, nn2806k: METOS, nn9188k: CICERO, nn9039k: NorESM (INES2)
 machine='betzy'
 
-casename="n1850.FATES-SP.ne30_tn14.alpha08d.20250102"
-compset="1850_DATM%QIA_CLM60%FATES-SP_SICE_SOCN_MOSART_SGLC_SWAV"
+casename="n1850.FATES-NOCOMP.ne30_tn14.alpha08d.20250102"
+compset="1850_DATM%QIA_CLM60%FATES_SICE_SOCN_MOSART_SGLC_SWAV"
 resolution="ne30pg3_tn14"
 project="nn9039k"
 
@@ -58,16 +58,6 @@ then
         ./bin/git-fleximod update
         echo "Built model here: $workpath$noresmrepo"        
 
-        #[cam]
-        #protocol = git
-        #tag = noresm2_5_015_cam6_3_158  
-        #repo_url = https://github.com/NorESMhub/CAM
-        #local_path = components/cam
-        #externals = Externals_CAM.cfg
-        #required = True
-
-        #Run this manually (old setup)
-        #./manage_externals/checkout_externals -v
     fi
 fi
 
@@ -109,7 +99,11 @@ then
         ./case.setup
         echo ' '
         echo "Done with Setup. Update namelists in $workpath$casename/user_nl_*"
-        #./case.build
+
+        #Add following lines to user_nl_clm    
+        #fates_paramfile = '/cluster/work/users/rosief/git/calibration_parameter_files/SP_calib/fates_params_det_alpha09.nc'
+        #use_fates_nocomp=TRUE
+        #use_fates_fixed_biogeog=TRUE 
     fi
 fi
 
@@ -131,3 +125,7 @@ then
     echo " "
     echo 'done submitting'       
 fi
+
+#After it has finised:
+# - copy to NIRD: https://noresm-docs.readthedocs.io/en/noresm2/output/archive_output.html
+# - run land diag: https://github.com/NorESMhub/xesmf_clm_fates_diagnostic 
