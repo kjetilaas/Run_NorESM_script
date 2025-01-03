@@ -15,7 +15,7 @@ USER="kjetisaa"
 project='nn9039k' #nn8057k: EMERALD, nn2806k: METOS, nn9188k: CICERO, nn9039k: NorESM (INES2)
 machine='betzy'
 
-casename="n1850.FATES-NOCOMP-AD.ne30_tn14.alpha08d.20250102"
+casename="n1850.FATES-NOCOMP-AD.ne30_tn14.alpha08d.20250103_fixFincl1"
 compset="1850_DATM%QIA_CLM60%FATES_SICE_SOCN_SROF_SGLC_SWAV"
 resolution="ne30pg3_tn14"
 project="nn9039k"
@@ -106,6 +106,7 @@ then
         echo "fates_paramfile = '/cluster/work/users/rosief/git/calibration_parameter_files/SP_calib/fates_params_det_alpha09.nc'" >> $workpath$casename/user_nl_clm
         echo "use_fates_nocomp=.true." >> $workpath$casename/user_nl_clm
         echo "use_fates_fixed_biogeog=.true." >> $workpath$casename/user_nl_clm
+        echo "hist_fincl1='TOTSOMC','TOTSOMN','TLAI','FATES_GPP','FATES_NPP','TWS'" >> $workpath$casename/user_nl_clm
     fi
 fi
 
