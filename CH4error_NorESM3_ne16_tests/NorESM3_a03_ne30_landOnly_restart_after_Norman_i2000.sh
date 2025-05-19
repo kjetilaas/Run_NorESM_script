@@ -121,7 +121,7 @@ then
         #CLM
         echo "use_fates_nocomp=.true." >> $workpath$casename/user_nl_clm
         echo "use_fates_fixed_biogeog=.true." >> $workpath$casename/user_nl_clm  
-        echo "fates_radiation_model = 'twosteam'" >> $workpath$casename/user_nl_clm             
+        echo "fates_radiation_model = 'twostream'" >> $workpath$casename/user_nl_clm             
         echo "finidat = '/cluster/work/users/kjetisaa/archive/i2000.ne30pg3_tn14.fatesnocomp.noresm3_0_alpha03.20250519_landOnly_restart_norman/rest/2001-01-01-00000/i2000.ne30pg3_tn14.fatesnocomp.noresm3_0_alpha03.20250519_landOnly_restart_norman.clm2.r.2001-01-01-00000.nc'" >> $workpath$casename/user_nl_clm        
     fi   
 fi
