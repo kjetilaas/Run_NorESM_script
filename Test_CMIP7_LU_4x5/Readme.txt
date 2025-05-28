@@ -1,0 +1,12 @@
+FATES_LU_spinup_4x5_hist_fromNOpotveg.sh: FAILED. /cluster/work/users/kjetisaa/noresm/ihist.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.hist_from_NOpotveg.20250527/run/cesm.log.1147966.250527-095550: ERROR: mismatch of input dimension         3033 with expected value         3471  for variable landunit
+FATES_LU_spinup_4x5_hist_frompotveg.sh: FAILED. /cluster/work/users/kjetisaa/noresm/ihist.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.hist_frompotveg.20250527/run/cesm.log.1147982.250527-111545: ERROR: mismatch of input dimension         3033 with expected value         3471  for variable landunit
+FATES_LU_spinup_4x5_hist_steadystateLU.sh: FAILED. /cluster/work/users/kjetisaa/noresm/ihist.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.hist_from_steadystateLU.20250527/run/cesm.log.1147964.250527-095332: EROR: check_dim_size ERROR: mismatch of input dimension         3033 with expected value         3471  for variable landunit
+FATES_LU_spinup_4x5_LUH2_Hist_coldstart.sh: SUCCEESS. ihist.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.LUH3_coldstart.20250522. 
+FATES_LU_spinup_4x5_NOpotveg_coldstart.sh: SUCCESS . i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.NOpotveg_coldstart.20250522/6. 
+FATES_LU_spinup_4x5_potveg_coldstart.sh: SUCCEESS. i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.potveg_coldstart.20250526. 
+FATES_LU_spinup_4x5_steadystate_coldstart.sh: SUCCESS. i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.constLU_coldstart.20250526. 
+FATES_LU_spinup_4x5_steadystate_fromNOpotveg.sh: FAILED. /cluster/work/users/kjetisaa/noresm/i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.steadystateLU_fromNOpotveg.20250527/run/cesm.log.1147989.250527-111628: ERROR in EDCanopyStructureMod.F90 at line 637
+FATES_LU_spinup_4x5_steadystate_frompotveg.sh: SUCCESS. i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.steadystateLU_frompotveg.20250527
+FATES_LU_spinup_4x5_steadystate_steadystate.sh: SUCCESS. i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.steadystateLU_steadystate.20250527
+FATES_LU_spinup_4x5_transLU_fromSteadystateLU.sh: SUCCESS. i1850.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.transLU_from_steadystateLU.20250527
+FATES_LU_spinup_4x5_hist_steadystateLU_16pft.sh:: FAILED. /cluster/work/users/kjetisaa/noresm/ihist.f45_f45_mg37.fatesnocomp.noresm3_0_alpha03c.hist_from_steadystateLU_16pft.20250527/run/cesm.log.1148083.250527-134607: check_dim_size ERROR: mismatch of input dimension         3033   with expected value         3471  for variable landunit
