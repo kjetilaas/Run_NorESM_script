@@ -1,10 +1,5 @@
 #!/bin/bash 
 
-#Scrip to clone, build and run NorESM on Betzy
-#This version follows setup for NorESM3 alpha01 (except for FATES-NOCOMP settings):
-#https://github.com/NorESMhub/noresm3_dev_simulations/issues/101
-
-
 dosetup1=0 #do first part of setup
 dosetup2=1 #do second part of setup (after first manual modifications)
 dosetup3=1 #do second part of setup (after namelist manual modifications)
@@ -173,10 +168,3 @@ then
     echo " "
     echo 'done submitting'       
 fi
-
-#After it has finised:
-# - copy to NIRD: https://noresm-docs.readthedocs.io/en/noresm2/output/archive_output.html
-# - run land diag: https://github.com/NorESMhub/xesmf_clm_fates_diagnostic 
-    # python run_diagnostic_full_from_terminal.py /nird/datalake/NS9560K/kjetisaa/i1850.FATES-NOCOMP-coldstart.ne30pg3_tn14.alpha08d.20250130/lnd/hist/ pamfile=short_nocomp.json outpath=/datalake/NS9560K/www/diagnostics/noresm/kjetisaa/
-#Useful commands: 
-# - cdo -fldmean -mergetime -apply,selvar,FATES_GPP,TOTSOMC,TLAI,TWS,TOTECOSYSC [ n1850.FATES-NOCOMP-AD.ne30_tn14.alpha08d.20250127_fixFincl1.clm2.h0.00* ] simple_mean_of_gridcells.nc
