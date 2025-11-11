@@ -19,7 +19,7 @@ noresmrepo="ctsm5.3.045_noresm_v14"
 noresmversion="ctsm5.3.045_noresm_v14"
 
 resolution="ne16pg3_tn14" #f19_g17, ne30pg3_tn14, f45_f45_mg37, ne16pg3_tn14 
-casename="i1850.$resolution.$noresmversion.CPLHIST_ADspinup.`date +"%Y-%m-%d"`"
+casename="i1850.$resolution.$noresmversion.CPLHIST_postADspinup.`date +"%Y-%m-%d"`"
 echo "casename: $casename"
 compset="1850_DATM%CPLHIST_CLM60%FATES-NOCOMP_SICE_SOCN_SROF_SGLC_SWAV_SESP"
 
@@ -98,13 +98,13 @@ then
         ./xmlchange DATM_PRESNDEP=none
         ./xmlchange DATM_YR_START=291
         ./xmlchange DATM_YR_END=340
-        ./xmlchange CLM_ACCELERATED_SPINUP=on
+        ./xmlchange CLM_ACCELERATED_SPINUP=off
         ./xmlchange DATM_PRESAERO=clim_1850 
-        ./xmlchange RUN_STARTDATE=0001-01-01
+        ./xmlchange RUN_STARTDATE=0151-01-01
         ./xmlchange STOP_OPTION=nyears
         ./xmlchange STOP_N=50
         ./xmlchange RESUBMIT=3
-        ./xmlchange --subgroup case.run JOB_WALLCLOCK_TIME=24:00:00
+        ./xmlchange --subgroup case.run JOB_WALLCLOCK_TIME=18:00:00
         ./xmlchange --subgroup case.st_archive JOB_WALLCLOCK_TIME=00:30:00        
         
         echo 'done with xmlchanges'        
@@ -126,6 +126,7 @@ fates_harvest_mode='luhdata_area'
 use_fates_potentialveg=.false.
 fluh_timeseries='/cluster/shared/noresm/inputdata/LU_data_CMIP7/LUH2_states_transitions_management.timeseries_ne16_hist_steadystate_1850_2025-11-06_cdf5.nc'
 flandusepftdat='/cluster/shared/noresm/inputdata/LU_data_CMIP7/fates_landuse_pft_map_to_surfdata_ne16np4_251106_cdf5.nc'
+finidat = '/cluster/work/users/kjetisaa/archive/i1850.ne16pg3_tn14.ctsm5.3.045_noresm_v14.CPLHIST_ADspinup.2025-11-08/rest/0151-01-01-00000/i1850.ne16pg3_tn14.ctsm5.3.045_noresm_v14.CPLHIST_ADspinup.2025-11-08.clm2.r.0151-01-01-00000.nc'
 hist_empty_htapes = .true.
 hist_fincl1 = 'TSA','RAIN','SNOW','EFLX_LH_TOT','FSH','QSOIL','TLAI','FCO2','TOTSOMC','TOTSOMC_1m','FATES_VEGC','FATES_GPP','FATES_NEP','FATES_NPP','TWS','H2OSNO','FSNO','PROD100C','PROD10C','FATES_LITTER_AG_CWD_EL','FATES_LITTER_AG_FINE_EL','FATES_LITTER_BG_CWD_EL','FATES_LITTER_BG_FINE_EL','FATES_GRAZING','FATES_FIRE_CLOSS','FATES_BURNFRAC'
 hist_mfilt=1
