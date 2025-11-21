@@ -16,7 +16,7 @@ project='nn9560k' #nn8057k: EMERALD, nn2806k: METOS, nn9188k: CICERO, nn9560k: N
 machine='betzy'
 
 #NorESM dir
-noresmrepo="NorESM_3_0_beta03b"
+noresmrepo="NorESM_3_0_beta03b_new"
 noresmversion="noresm3_0_beta03b"
 
 resolution="ne16pg3_tn14" #f19_g17, ne30pg3_tn14, f45_f45_mg37
@@ -183,8 +183,8 @@ then
     echo "Done with Build"
 
     # copy restart files and pointers
-    cp /cluster/work/users/kjetisaa/archive/n1850.ne16pg3_tn14.noresm3_0_beta03b.BLOMalbAndBrine.2025-10-24/rest/0291-01-01-00000/*.r*.nc /cluster/work/users/kjetisaa/noresm/$casename/run/ #Update here
-    cp /cluster/work/users/kjetisaa/archive/n1850.ne16pg3_tn14.noresm3_0_beta03b.BLOMalbAndBrine.2025-10-24/rest/0291-01-01-00000/rpointer.*0291-01-01-00000 /cluster/work/users/kjetisaa/noresm/$casename/run/ #Update here
+    cp /cluster/work/users/kjetisaa/archive/n1850.ne16pg3_tn14.noresm3_0_beta03b.CPLHIST.2025-10-29/rest/0391-01-01-00000/*.r*.nc /cluster/work/users/kjetisaa/noresm/$casename/run/ #Update here
+    cp /cluster/work/users/kjetisaa/archive/n1850.ne16pg3_tn14.noresm3_0_beta03b.CPLHIST.2025-10-29/rest/0391-01-01-00000/rpointer.*0391-01-01-00000 /cluster/work/users/kjetisaa/noresm/$casename/run/ #Update here
     echo "copied restart files and pointers"
 fi
 
