@@ -18,7 +18,7 @@ machine='betzy'
 noresmrepo="ctsm5.3.045_noresm_v16" 
 noresmversion="ctsm5.3.045_noresm_v16"
 
-resolution="ne16pg3_tn14" #f19_g17, ne30pg3_tn14, f45_f45_mg37, ne16pg3_tn14 
+resolution="ne30pg3_tn14" #f19_g17, ne30pg3_tn14, f45_f45_mg37, ne16pg3_tn14 
 casename="i1850.$resolution.$noresmversion.CPLHIST_ADspinup.`date +"%Y-%m-%d"`"
 echo "casename: $casename"
 compset="1850_DATM%CPLHIST_CLM60%FATES-NOCOMP_SICE_SOCN_SROF_SGLC_SWAV_SESP"
@@ -86,25 +86,17 @@ then
     else
         
         echo "making case:" $workpath$casename        
-        ./create_newcase --case $workpath$casename --compset $compset --res $resolution --project $project --run-unsupported --mach betzy
+        ./create_newcase --case $workpath$casename --compset $compset --res $resolution --project $project --run-unsupported --mach betzy --pecount L
 
         cd $workpath$casename
 
         #XML changes
         echo 'updating settings' 
-        ./xmlchange NTASKS_CPL=-10                           
-        ./xmlchange ROOTPE_ATM=-9       
-        ./xmlchange NTASKS_ATM=-1
-        ./xmlchange NTASKS_OCN=-9
-        ./xmlchange NTASKS_LND=-9
-        ./xmlchange NTASKS_ICE=-9
-        ./xmlchange NTASKS_ROF=-9
-        ./xmlchange NTASKS_GLC=-9    
-        ./xmlchange DATM_CPLHIST_CASE=n1850.ne16pg3_tn14.noresm3_0_beta03b.CPLHIST.2025-10-29
-        ./xmlchange DATM_CPLHIST_DIR=/cluster/shared/noresm/inputdata/cplhist/noresm3_0/n1850.ne16pg3_tn14.noresm3_0_beta03b.CPLHIST.2025-10-29/cplhist/
+        ./xmlchange DATM_CPLHIST_CASE=n1850.ne30_tn14.nor3_b01-cplhist-noLU.20250716
+        ./xmlchange DATM_CPLHIST_DIR=/cluster/shared/noresm/inputdata/cplhist/noresm3_0/n1850.ne30_tn14.nor3_b01-cplhist-noLU.20250716/
         ./xmlchange DATM_PRESNDEP=none
-        ./xmlchange DATM_YR_START=351
-        ./xmlchange DATM_YR_END=410
+        ./xmlchange DATM_YR_START=51
+        ./xmlchange DATM_YR_END=100
         ./xmlchange CLM_ACCELERATED_SPINUP=on
         ./xmlchange DATM_PRESAERO=clim_1850 
         ./xmlchange RUN_STARTDATE=0001-01-01
@@ -133,22 +125,14 @@ fates_harvest_mode='luhdata_area'
 use_fates_potentialveg=.false.
 do_transient_lakes = .false.
 do_transient_urban = .false.
-fluh_timeseries='/cluster/shared/noresm/inputdata/LU_data_CMIP7/LUH2_states_transitions_management.timeseries_ne16_hist_steadystate_1850_2025-11-06_cdf5.nc'
-flandusepftdat='/cluster/shared/noresm/inputdata/LU_data_CMIP7/fates_landuse_pft_map_to_surfdata_ne16np4_251106_cdf5.nc'
+fluh_timeseries='/cluster/shared/noresm/inputdata/LU_data_CMIP7/LUH3_states_transitions_management.timeseries_ne30_hist_steadystate_1850_2025-06-03_cdf5.nc'
+flandusepftdat='/cluster/shared/noresm/inputdata/LU_data_CMIP7/fates_landuse_pft_map_to_surfdata_ne30np4_250530_cdf5.nc'
 hist_empty_htapes = .true.
 hist_fincl1 = 'TSA','RAIN','SNOW','EFLX_LH_TOT','FSH','QSOIL','TLAI','FCO2','TOTSOMC','TOTSOMC_1m','FATES_VEGC','FATES_GPP','FATES_NEP','FATES_NPP','TWS','H2OSNO','FSNO','PROD100C','PROD10C','FATES_LITTER_AG_CWD_EL','FATES_LITTER_AG_FINE_EL','FATES_LITTER_BG_CWD_EL','FATES_LITTER_BG_FINE_EL','FATES_GRAZING','FATES_FIRE_CLOSS','FATES_BURNFRAC'
 hist_mfilt=1
 hist_nhtfrq=0  
 EOF
 
-        #Add reservation in case.run and case.st_archive
-#        sed -i '10i\#SBATCH  --reservation=nn9560k' .case.run
-#        sed -i '10i\#SBATCH  --reservation=nn9560k' case.st_archive
-        #Replace lines in case.st_archive to use 4 nodes and 4 tasks
-#        sed -i 's/#SBATCH  --nodes=1/#SBATCH  --nodes=4/g' case.st_archive
-#        sed -i 's/#SBATCH  --ntasks=1/#SBATCH  --ntasks=4/g' case.st_archive
-#        sed -i 's/#SBATCH  --partition=preproc/#SBATCH  --partition=normal/g' case.st_archive
-#        sed -i '/mem-per-cpu=1900M/d' case.st_archive
     fi
 fi
 
