@@ -20,7 +20,7 @@ noresmrepo="NorESM_3_0_beta09"
 noresmversion="noresm3_0_beta09"
 
 resolution="ne16pg3_tn14" #f19_g17, ne30pg3_tn14, f45_f45_mg37
-casename="n1850.$resolution.$noresmversion.`date +"%Y-%m-%d"`"
+casename="n1850.$resolution.$noresmversion.OcnICppev3.`date +"%Y-%m-%d"`"
 compset="1850_CAM70%LT%NORESM%CAMoslo_CLM60%FATES-NOCOMP_CICE_BLOM%HYB%ECO_MOSART_DGLC%NOEVOLVE_SWAV_SESP"
 
 # aka where do you want the code and scripts to live?
@@ -92,7 +92,7 @@ then
         ./xmlchange STOP_OPTION=nyears
         ./xmlchange STOP_N=5
         ./xmlchange REST_N=5
-        ./xmlchange RESUBMIT=19        
+        ./xmlchange RESUBMIT=5        
         ./xmlchange REST_OPTION=nyears
         ./xmlchange HAMOCC_SEDSPINUP=FALSE
         ./xmlchange BLOM_OUTPUT_SIZE=spinup
@@ -172,7 +172,7 @@ rcalc     = 7.0
 ropal     = 80.0
 rano3denit = 0.00010
 wlin=0.01785714
-ICFILE = "/cluster/shared/noresm/inputdata/restart/n1850.ne16_tn14.BLOM_cplhist_hybrid.noresm3_0_beta06.20251117/n1850.ne16_tn14.BLOM_cplhist_hybrid.noresm3_0_beta06.20251117.blom.r.0751-01-01-00000.nc"
+ICFILE = "/cluster/shared/noresm/inputdata/restart/n1850.ne16pg3_tn14.noresm3_0_beta06.PPEbasedV3.2025-12-11/n1850.ne16pg3_tn14.noresm3_0_beta06.PPEbasedV3.2025-12-11.blom.r.0506-01-01-00000.nc"
 EOF
 
 cat <<EOF >> user_nl_cice
@@ -180,18 +180,18 @@ drsnw_min = 1.0
 floediam = 50.0
 f_aero='m'
 f_iage='m'
-ice_ic = '/cluster/shared/noresm/inputdata/restart/n1850.ne16_tn14.BLOM_cplhist_hybrid.noresm3_0_beta06.20251117/n1850.ne16_tn14.BLOM_cplhist_hybrid.noresm3_0_beta06.20251117.cice.r.0751-01-01-00000.nc'
+ice_ic = '/cluster/shared/noresm/inputdata/restart/n1850.ne16pg3_tn14.noresm3_0_beta06.PPEbasedV3.2025-12-11/n1850.ne16pg3_tn14.noresm3_0_beta06.PPEbasedV3.2025-12-11.cice.r.0506-01-01-00000.nc'
 EOF
         echo "done with user_nl_* modifications"
 
         #Add reservation in case.run and case.st_archive
-        sed -i '10i\#SBATCH  --reservation=nn9560k' .case.run
-        sed -i '10i\#SBATCH  --reservation=nn9560k' case.st_archive
+        #sed -i '10i\#SBATCH  --reservation=nn9560k' .case.run
+        #sed -i '10i\#SBATCH  --reservation=nn9560k' case.st_archive
         #Replace lines in case.st_archive to use 4 nodes and 4 tasks
-        sed -i 's/#SBATCH  --nodes=1/#SBATCH  --nodes=4/g' case.st_archive
-        sed -i 's/#SBATCH  --ntasks=1/#SBATCH  --ntasks=4/g' case.st_archive
-        sed -i 's/#SBATCH  --partition=preproc/#SBATCH  --partition=normal/g' case.st_archive
-        sed -i '/mem-per-cpu=1900M/d' case.st_archive
+        #sed -i 's/#SBATCH  --nodes=1/#SBATCH  --nodes=4/g' case.st_archive
+        #sed -i 's/#SBATCH  --ntasks=1/#SBATCH  --ntasks=4/g' case.st_archive
+        #sed -i 's/#SBATCH  --partition=preproc/#SBATCH  --partition=normal/g' case.st_archive
+        #sed -i '/mem-per-cpu=1900M/d' case.st_archive
 
         #more user_nl_*
     fi
